@@ -52,6 +52,10 @@ async def main():
 
 async def test():
     # Список критериев
+    import docx
+    import random
+
+    # Список критериев
     criteria = [
         "заключение",
         "список использованных источников",
@@ -75,17 +79,34 @@ async def test():
         "Соблюдение ГОСТ",
         "Неверное оформление интернет источников (1,7)",
         "Неверное оформление учебника (25)"
-    ]
+        ]
+
+    # Список для случайного выбора + или -
     plus_and = ['+', '-']
 
-    import docx
+    # Создание документа
     doc = docx.Document()
-    table = doc.add_table(rows=1, cols=1)
-    row = table.add_row('qwe','qweqw')
+
+    # Добавление таблицы с 1 строкой и 2 столбцами
+    table = doc.add_table(rows=1, cols=2)
+
+    # Установка заголовков
+    hdr_cells = table.rows[0].cells
+    hdr_cells[0].text = "Критерий"
+    hdr_cells[1].text = "+ или -"
+
+    # Заполнение таблицы критериями и знаками + или -
+    for crit in criteria:
+        row_cells = table.add_row().cells
+        row_cells[0].text = crit
+        row_cells[1].text = random.choice(plus_and)
+
+    # Сохранение документа
+    doc.save("criteria_table.docx")
 
 
 
 
 if __name__ == '__main__':
     # x = asyncio.run(main())
-    asyncio.run(test())
+    asyncio.run(main())
